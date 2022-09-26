@@ -1,0 +1,48 @@
+CREATE TABLE CLIENT(
+    idC INT PRIMARY KEY,
+    nomC VARCHAR(30),
+    prenomC VARCHAR(30),
+    poidsC INT,
+    cotisation BOOLEAN,
+);
+
+CREATE TABLE PONEY (
+    idPo INT PRIMARY KEY,
+    poidPo INT,
+    poidSup INT,
+    nomPo VARCHAR(30),
+    agePo INT
+
+);
+CREATE TABLE MONITEUR (
+    idM INT PRIMARY KEY,
+    nomM VARCHAR(30),
+    prenomM VARCHAR(30)
+);
+
+CREATE TABLE COURS (
+    idCour INT PRIMARY KEY,
+    nomcour VARCHAR(30),
+    idM INT , 
+    dates DATE,
+    heure TIME,
+    duree TIME check (duree > '02:00:00'),
+);
+
+CREATE TABLE RESERVER (
+    idC INT,
+    idPo INT,
+    idCour INT,
+    PRIMARY KEY (idC, idPo, idCour)
+
+);
+
+ALTER TABLE COURS ADD FOREIGN KEY (idM) REFERENCES MONITEUR(idM);
+ALTER TABLE RESERVER ADD FOREIGN KEY (idC) REFERENCES CLIENT(idC);
+ALTER TABLE RESERVER ADD FOREIGN KEY (idPo) REFERENCES PONEY(idPo);
+ALTER TABLE RESERVER ADD FOREIGN KEY (idCour) REFERENCES COURS(idCour)
+
+
+
+
+
