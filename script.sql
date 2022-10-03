@@ -23,10 +23,11 @@ CREATE TABLE MONITEUR (
 CREATE TABLE COURS (
     idCour INT PRIMARY KEY,
     nomcour VARCHAR(30),
-    idM INT , 
+    idM INT ,
+    nbMax int, 
     dates DATE,
     heure TIME check (heure > '08:00:00' and heure < '18:00:00'),
-    duree TIME check (duree > '02:00:00'),
+    duree TIME check (duree <= '02:00:00'),
 );
 
 CREATE TABLE RESERVER (
@@ -36,6 +37,7 @@ CREATE TABLE RESERVER (
     PRIMARY KEY (idC, idPo, idCour)
 
 );
+
 
 ALTER TABLE COURS ADD FOREIGN KEY (idM) REFERENCES MONITEUR(idM);
 ALTER TABLE RESERVER ADD FOREIGN KEY (idC) REFERENCES CLIENT(idC);
@@ -100,21 +102,29 @@ VALUES (200,"Clavet","Fabrice"),
        (208,"Makarov","Vladimir"),
        (209,"Mason","Alex");
 
-INSERT INTO COURS (idCour,nomcour,idM,dates,heure,duree)
-values (1001,"Cours1",300,"2022-10-01","08:00:00","02:00:00"),
-       (1002,"Cours2",301,"2022-10-01","10:00:00","01:30:00"),
-       (1003,"Cours3",302,"2022-10-01","12:00:00","01:45:00"),
-       (1004,"Cours4",303,"2022-10-01","14:00:00","02:00:00"),
-       (1005,"Cours5",304,"2022-10-01","16:00:00","01:00:00"),
-       (1006,"Cours6",305,"2022-10-01","18:00:00","01:20:00"),
-       (7,"Cours7",306,"2022-10-01","08:00:00","02:00:00"),
-       (8,"Cours8",307,"2022-10-01","10:00:00","02:00:00"),
-       (9,"Cours9",308,"2022-10-01","12:00:00","02:00:00"),
-       (10,"Cours10",309,"2022-10-01","14:00:00","02:00:00"),
-       (11,"Cours11",310,"2022-10-01","16:00:00","02:00:00"),
+INSERT INTO COURS (idCour,nomcour,nbMax,idM,dates,heure,duree)
+values (1000,"Cours1",1,200,"2019-01-01","08:00:00","02:00:00"),
+       (1002,"Cours2",10,201,"2019-01-01","08:00:00","01:00:00"),
+       (1003,"Cours3",5,202,"2019-01-01","08:00:00","02:00:00"),
+       (1004,"Cours4",10,203,"2019-01-01","08:00:00","01:45:00"),
+       (1005,"Cours5",4,204,"2019-01-01","08:00:00","01:25:00"),
+       (1006,"Cours6",10,205,"2019-01-01","08:00:00","02:00:00"),
+       (1007,"Cours7",6,206,"2019-01-01","08:00:00","02:00:00"),
+       (1008,"Cours8",10,207,"2019-01-01","08:00:00","01:30:00"),
+       (1009,"Cours9",1,208,"2019-01-01","08:00:00","02:00:00"),
+       (1010,"Cours10",10,209,"2019-01-01","08:00:00","02:00:00");
 
 INSERT INTO RESERVER (idC,idPo,idCour)
-VALUES ()
+VALUES (100,1,1001),
+       (101,2,1002),
+       (102,3,1003),
+       (103,4,1004),
+       (104,5,1005),
+       (105,6,1006),
+       (106,7,1007),
+       (107,8,1008),
+       (108,9,1009),
+       (109,10,1010),
 
 
 
