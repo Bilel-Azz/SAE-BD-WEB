@@ -18,7 +18,7 @@ CREATE TABLE PONEY (
     poidPo INT,
     poidSup INT,
     nomPo VARCHAR(30),
-    agePo INT
+    agePo INT check (agePo >= 0 and agePo <= 40),
 
 );
 CREATE TABLE MONITEUR (
@@ -31,7 +31,7 @@ CREATE TABLE COURS (
     idCour INT PRIMARY KEY,
     nomcour VARCHAR(30),
     idM INT ,
-    nbMax int, 
+    nbMax int check (nbMax >= 0 and nbMax <= 10), 
     dates DATE,
     heure TIME check (heure > '08:00:00' and heure < '18:00:00'),
     duree TIME check (duree <= '02:00:00')
