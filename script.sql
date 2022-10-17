@@ -1,9 +1,16 @@
+DROP TABLES RESERVER;
+DROP TABLES CLIENT;
+DROP TABLES PONEY;
+DROP TABLES COURS;
+DROP TABLES MONITEUR;
+
+
 CREATE TABLE CLIENT(
     idC INT PRIMARY KEY,
     nomC VARCHAR(30),
     prenomC VARCHAR(30),
     poidsC INT,
-    cotisation BOOLEAN,
+    cotisation BOOLEAN
 );
 
 CREATE TABLE PONEY (
@@ -27,7 +34,7 @@ CREATE TABLE COURS (
     nbMax int, 
     dates DATE,
     heure TIME check (heure > '08:00:00' and heure < '18:00:00'),
-    duree TIME check (duree <= '02:00:00'),
+    duree TIME check (duree <= '02:00:00')
 );
 
 CREATE TABLE RESERVER (
@@ -42,15 +49,15 @@ CREATE TABLE RESERVER (
 ALTER TABLE COURS ADD FOREIGN KEY (idM) REFERENCES MONITEUR(idM);
 ALTER TABLE RESERVER ADD FOREIGN KEY (idC) REFERENCES CLIENT(idC);
 ALTER TABLE RESERVER ADD FOREIGN KEY (idPo) REFERENCES PONEY(idPo);
-ALTER TABLE RESERVER ADD FOREIGN KEY (idCour) REFERENCES COURS(idCour)
+ALTER TABLE RESERVER ADD FOREIGN KEY (idCour) REFERENCES COURS(idCour);
 
 
-INSERT INTO CLIENT (idC,nomC,prenomC,poidC,cotisation)
+INSERT INTO CLIENT (idC,nomC,prenomC,poidsC,cotisation)
 VALUES (100,"Lazure","Arnaud",52,True),
        (101,"Faucher","Nicolas",35,True),
        (102,"Boivin","Helene",60,True),
        (103,"Morin","Aubert",46,False),
-       (104,"Brisette","Madelenne",65,False);
+       (104,"Brisette","Madelenne",65,False),
        (105,"Musk","Elon",52,True),
        (106,"Tesla","Nicolas",35,True),
        (107,"Cena","Jhon",60,True),
@@ -58,7 +65,7 @@ VALUES (100,"Lazure","Arnaud",52,True),
        (109,"Uzumaki","Naruto",65,False);
          
 
-INSERT INTO PONEY (idPo,poidP,poidSup,nomPo,agePo)
+INSERT INTO PONEY (idPo,poidPo,poidSup,nomPo,agePo)
 VALUES (1,170,50,"Wolf",21),
        (2,210,65,"Buddy",28),
        (3,190,50,"Peak",32),
@@ -103,7 +110,7 @@ VALUES (200,"Clavet","Fabrice"),
        (209,"Mason","Alex");
 
 INSERT INTO COURS (idCour,nomcour,nbMax,idM,dates,heure,duree)
-values (1000,"Cours1",1,200,"2019-01-01","08:00:00","02:00:00"),
+values (1001,"Cours1",1,200,"2019-01-01","08:00:00","02:00:00"),
        (1002,"Cours2",10,201,"2019-01-01","08:00:00","01:00:00"),
        (1003,"Cours3",5,202,"2019-01-01","08:00:00","02:00:00"),
        (1004,"Cours4",10,203,"2019-01-01","08:00:00","01:45:00"),
@@ -124,7 +131,7 @@ VALUES (100,1,1001),
        (106,7,1007),
        (107,8,1008),
        (108,9,1009),
-       (109,10,1010),
+       (109,10,1010);
 
 
 
