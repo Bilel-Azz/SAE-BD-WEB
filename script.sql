@@ -18,7 +18,7 @@ CREATE TABLE PONEY (
     poidPo INT,
     poidSup INT,
     nomPo VARCHAR(30),
-    agePo INT check (agePo >= 0 and agePo <= 40),
+    agePo INT check (agePo >= 0 and agePo <= 40)
 
 );
 CREATE TABLE MONITEUR (
@@ -132,9 +132,6 @@ VALUES (100,1,1001),
        (107,8,1008),
        (108,9,1009),
        (109,10,1010);
-
-
-
 
 
 
