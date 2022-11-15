@@ -5,7 +5,7 @@
     -- 4. un client qui existe déjà ne peut pas être ajouté
     -- 5. un moniteur ne peut pas être ajouté s'il existe déjà
     -- 6. un poney ne peut pas être ajouté s'il existe déjà
-    -- 7. un cours ne peut pas etre ajoute s'il existe déjà à la meme heure
+    -- 7. un cours ne peut pas etre ajoute s'il existe déjà avec le meme moniteur et la meme date
     
 
 DROP TRIGGER if exists verificationReservation;
@@ -15,10 +15,39 @@ DROP TRIGGER if exists verificationCours;
 DROP TRIGGER if exists verificationPoney;
 
 delimiter |
+create or replace function getNbPlacesReservees(idC int) returns int
+begin
+    declare nbPlaces int;
+    select count(*) into nbPlaces from RESERVER where idCour = idC;
+    return nbPlaces;
+end |
+delimiter ;
+
+delimiter |
+create or replace function getNbPlacesCoursMax(idC int) returns int
+begin
+    declare nbPlaceMax int;
+    select nbMax into nbPlaceMax from COURS where idCour = idC;
+    return nbPlaceMax;
+end |
+delimiter ;
+
+delimiter |
+-- Verifie si un moniteur veut etre inscrit à un cours sur une heure sur laquelle il participe déjà à un autre cours à une date donnée
+create or replace function verifCoursMoniteur(idC int,heure time , datee date) returns boolean
+begin
+    declare verif boolean;
+    
+
+
+
+
+
+delimiter |
 create TRIGGER verificationReservation before INSERT on RESERVER for each row
 begin
     declare res VARCHAR(100) default '';
-    declare nbPersonnes int;
+    declare reservation int;
     declare nbMaximum int;
     declare dureeCour int;
     declare dureePrecedent int;
@@ -26,16 +55,16 @@ begin
     declare heurePrecedent time;
     declare idPo int;
     declare cotisationC boolean;
-    declare idMoniteur int;
-    select nbMax into nbMaximum from RESERVER natural join COURS where idCour = new.idCour;
-    select count(*) into nbPersonnes from RESERVER where idCour = new.idCour;
+    set reservation = getNbPlacesReservees(new.idCour);
+    set nbMaximum = getNbPlacesCoursMax(new.idCour);
+    select count(*) into reservation from RESERVER where idCour = new.idCour;
     select duree into dureeCour from COURS where idCour = new.idCour;
     select heure into heureCour from COURS where idCour = new.idCour;
     select duree into dureePrecedent from COURS where idCour = (select max(idCour) from COURS where idCour < new.idCour);
     select heure into heurePrecedent from COURS where idCour = (select max(idCour) from COURS where idCour < new.idCour);
     select cotisation into cotisationC from CLIENT where idC = new.idC;
-    if (nbPersonnes >= nbMaximum) then
-        set res = concat("impossible de faire la réservation ",new.idCour," le cours est complet");
+    if (reservation >= nbMaximum) then
+        set res = concat("impossible de faire la réservation pour le cours ",new.idCour," le cours est complet");
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
     end if; 
     if (dureeCour = 120 and dureePrecedent = 120 and heureCour = heurePrecedent + 1 and idPo = new.idPo) then
@@ -80,11 +109,18 @@ create TRIGGER verificationCours before INSERT on COURS for each row
 begin
     declare res VARCHAR(100) default '';
     declare idCo int;
+    declare idMoniteur int;
+    declare dateCour date;
+    declare heureCour time;
+    select idM into idMoniteur from COURS where idM = new.idM;
+    select dates into dateCour from COURS where dates = new.dates;
+    select heure into heureCour from COURS where heure = new.heure;
     select idCour into idCo from COURS where idCour = new.idCour;
     if (idCo = new.idCour) then
         set res = concat("impossible d'insérer le cours ",new.idCour," le cours existe déjà dans la base de données");
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
     end if;
+
 end |
 delimiter ;
 
@@ -100,3 +136,4 @@ begin
     end if;
 end |
 delimiter ;
+
