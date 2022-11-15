@@ -3,10 +3,10 @@ public class Client {
     private String nomC;
     private String prenomC;
     private int poidsC;
-    private bool cotisation;
+    private Boolean cotisation;
 
 
-    public Client(int idC, String nomC, String prenomC, int poidsC, bool cotisation) {
+    public Client(int idC, String nomC, String prenomC, int poidsC, Boolean cotisation) {
         this.idC = idC;
         this.nomC = nomC;
         this.prenomC = prenomC;
@@ -46,11 +46,11 @@ public class Client {
         this.poidsC = poidsC;
     }
 
-    public bool getCotisation() {
+    public Boolean getCotisation() {
         return this.cotisation;
     }
 
-    public void setCotisation(bool cotisation) {
+    public void setCotisation(Boolean cotisation) {
         this.cotisation = cotisation;
     }
 
