@@ -6,7 +6,7 @@
     -- 5. un moniteur ne peut pas être ajouté s'il existe déjà
     -- 6. un poney ne peut pas être ajouté s'il existe déjà
     -- 7. un cours ne peut pas etre ajoute si le moniteur à déjà un cours dans la journée
-    -- 8. 
+    -- 8. une reservation ne peut pas etre faite si le client choisi un poney qui ne peut pas supporter son poids
     
 
 DROP TRIGGER if exists verificationReservation;
@@ -73,6 +73,37 @@ begin
 end |
 delimiter ;
 
+delimiter |
+create or replace function getHeure(idC int) returns VARCHAR(200)
+begin
+    declare heureCours time;
+    select heure into heureCours from COURS where idCour = idC;
+    return heureCours;
+end |
+delimiter ;
+
+delimiter |
+create or replace function getDuree(idC int) returns VARCHAR(200)
+begin
+    declare dureeCours time;
+    select duree into dureeCours from COURS where idCour = idC;
+    return dureeCours;
+end |
+delimiter ;
+
+delimiter |
+create or replace function verifSiPoneyABesoinDeRepos(idC int,datees date,heure time , duree time) returns VARCHAR(200)
+begin
+    declare calculTemps time;
+    declare res time;
+    declare reponse VARCHAR(200) default 'participation possible';
+    select TIMEDIFF(heure,duree) into calculTemps from COURS where dates = datees and idCour = idC;
+    select TIMEDIFF(heure,calculTemps) into res from COURS where dates = datees and idCour = idC;
+    return res;
+end |
+delimiter ;
+
+select verifSiPoneyABesoinDeRepos(1001,"2022-01-01",'08:00:00','02:00:00');
 
 delimiter |
 create TRIGGER verificationReservation before INSERT on RESERVER for each row
