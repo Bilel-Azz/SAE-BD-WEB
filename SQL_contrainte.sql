@@ -34,9 +34,9 @@ end |
 delimiter ;
 
 delimiter |
-create or replace function verifCoursMoniteur(idMo int,dateC date) returns VARCHAR(200)
+create or replace function verifCoursMoniteur(idMo int,dateC date) returns VARCHAR(100)
 begin
-    declare res VARCHAR(42) default 'participation possible';
+    declare res VARCHAR(100) default 'participation possible';
     select idM into res from COURS where idM = idMo and dates = dateC;
     if res = idMo then
         set res = "participation impossible";
@@ -92,42 +92,63 @@ end |
 delimiter ;
 
 delimiter |
+create or replace function getDateCour(idC int) returns date
+begin
+    declare dateCours date;
+    select dates into dateCours from COURS where idCour = idC;
+    return dateCours;
+end |
+delimiter ;
+
+
+delimiter |
 create or replace function verifSiPoneyABesoinDeRepos(idC int,datees date,heure time , duree time) returns VARCHAR(200)
 begin
     declare calculTemps time;
     declare res time;
-    declare reponse VARCHAR(200) default 'participation possible';
+    declare reponse VARCHAR(200) default 'reservation possible';
     select TIMEDIFF(heure,duree) into calculTemps from COURS where dates = datees and idCour = idC;
     select TIMEDIFF(heure,calculTemps) into res from COURS where dates = datees and idCour = idC;
-    return res;
+    if res = "02:00:00" then
+        set reponse = "reservation impossible";
+    end if;
+    return reponse;
 end |
 delimiter ;
-
-select verifSiPoneyABesoinDeRepos(1001,"2022-01-01",'08:00:00','02:00:00');
 
 delimiter |
 create TRIGGER verificationReservation before INSERT on RESERVER for each row
 begin
-    declare res VARCHAR(100) default '';
+    declare res VARCHAR(500) default '';
     declare reservation int;
     declare nbMaximum int;
     declare cotisationC boolean;
     declare poidSupportablePoney int;
     declare poidClient int;
+    declare dateCour date;
+    declare  heureCours time;
+    declare dureeCours time;
+    declare idCours int;
+    declare poneyDisponible VARCHAR(200);
+    set dateCour = getDateCour(new.idCour);
+    set heureCours = getHeure(new.idCour);
+    set dureeCours = getDuree(new.idCour);
+    set poneyDisponible = verifSiPoneyABesoinDeRepos(new.idCour,dateCour,heureCours,dureeCours);
     set reservation = getNbPlacesReservees(new.idCour);
     set nbMaximum = getNbPlacesCoursMax(new.idCour);
     set poidSupportablePoney = getPoidSupportablePoney(new.idPo);
     set poidClient = getPoidClient(new.idC);
     select count(*) into reservation from RESERVER where idCour = new.idCour;
     select cotisation into cotisationC from CLIENT where idC = new.idC;
+    select idCour into idCours from RESERVER where idCour = new.idCour;
     if (reservation >= nbMaximum) then
         set res = concat("impossible de faire la réservation pour le cours ",new.idCour," le cours est complet");
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
     end if; 
-    -- if (dureeCour = 120 and dureePrecedent = 120 and heureCour = heurePrecedent + 1 and idPo = new.idPo) then
-    --     set res = concat("impossible de faire la réservation ",new.idPo," le poney a besoin de repos");
-    --     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
-    -- end if;
+    if (poneyDisponible = "reservation impossible") then
+        set res = concat("impossible de faire la réservation pour le cours ",new.idCour," le poney a besoin de repos sur l'horraire du cours");
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
+    end if;
     if (cotisationC = false) then
         set res = concat("impossible de faire la réservation ",new.idCour," le client n'a pas payé sa cotisation");
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
@@ -168,25 +189,23 @@ delimiter ;
 delimiter |
 create TRIGGER verificationCours before INSERT on COURS for each row
 begin
-    declare res VARCHAR(100) default '';
+    declare res VARCHAR(500) default '';
     declare idCo int;
     declare idMoniteur int;
-    -- declare dateCour date;
-    -- declare heureCour time;
-    declare presenteCour VARCHAR(60);
-    set presenteCour = verifCoursMoniteur(new.idM,new.dates);
-    select idM into idMoniteur from COURS where idM = new.idM;
-    -- select dates into dateCour from COURS where dates = new.dates;
-    -- select heure into heureCour from COURS where heure = new.heure;
+    declare dateCour date;
+    declare presenteCour VARCHAR(100);
     select idCour into idCo from COURS where idCour = new.idCour;
+    -- select idM into idMoniteur from COURS where idM = new.idM;
+    -- select dates into dateCour from COURS where dates = new.dates;
+    -- set presenteCour = verifCoursMoniteur(idMoniteur,dateCour);
     if (idCo = new.idCour) then
         set res = concat("impossible d'insérer le cours ",new.idCour," le cours existe déjà dans la base de données");
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
     end if;
-    if (presenteCour = "participation impossible") then
-        set res = concat("impossible d'insérer le cours ",new.idCour," le moniteur participe déjà à un cours sur cette journée");
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
-    end if;
+    -- if (presenteCour = "participation impossible") then
+    --     set res = concat("impossible d'insérer le cours ",new.idCour," le moniteur participe déjà à un cours sur cette journée");
+    --     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = res;
+    -- end if;
 end |
 delimiter ;
 
