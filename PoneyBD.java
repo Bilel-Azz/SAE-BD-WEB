@@ -250,23 +250,198 @@ public class PoneyBD {
          return reserver;
     }
 
+    public void updateClient(Client c){
+        try {
+            String query = "UPDATE CLIENT SET nomC = ?, prenomC = ?, poidsC = ?, cotisation = ? WHERE idC = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setString(1, c.getNomC());
+            ps.setString(2, c.getPrenomC());
+            ps.setInt(3, c.getPoidsC());
+            ps.setBoolean(4, c.getCotisation());
+            ps.setInt(5, c.getIdC());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-    // public void updateClient(Client c){
-    //     try {
-    //         String query = "UPDATE Client SET nomC = ?, prenomC = ?, adresseC = ?, telC = ? WHERE idC = ?";
-    //         PreparedStatement ps = co.getConnexion().prepareStatement(query);
-    //         ps.setString(1, c.getNomC());
-    //         ps.setString(2, c.getPrenomC());
-    //         ps.setString(3, c.getAdresseC());
-    //         ps.setString(4, c.getTelC());
-    //         ps.setInt(5, c.getIdC());
-    //         ps.executeUpdate();
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 
+    public void updatePoney(Poney p){
+        try {
+            String query = "UPDATE PONEY SET nomPo = ?, agePo = ?, poidPo = ?, poidSup = ? WHERE idPo = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setString(1, p.getNomPo());
+            ps.setInt(2, p.getAgePo());
+            ps.setInt(3, p.getPoidPo());
+            ps.setInt(4, p.getPoidSup());
+            ps.setInt(5, p.getIdPo());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void deletePoney(int id){
+        try {
+            String query = "DELETE FROM PONEY WHERE idPo = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateReserver(Reserver r){
+        try {
+            String query = "UPDATE RESERVER SET idC = ?, idCour = ?, idPo = ? WHERE idC = ? AND idCour = ? AND idPo = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setInt(1, r.getIdC());
+            ps.setInt(2, r.getIdCour());
+            ps.setInt(3, r.getIdPo());
+            ps.setInt(4, r.getIdC());
+            ps.setInt(5, r.getIdCour());
+            ps.setInt(6, r.getIdPo());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCours(Cours c){
+        try {
+            String query = "UPDATE COURS SET nomCour = ?, idM = ?, dates = ?, heure = ?, duree = ? WHERE idCour = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setString(1, c.getNomCour());
+            ps.setInt(2, c.getIdM());
+            ps.setString(3, c.getDateCoursString());
+            ps.setString(4, c.getHeureString());
+            ps.setString(5, c.getDureeString());
+            ps.setInt(6, c.getIdCour());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } 
+
+    public void updateMoniteur(Moniteur m){
+        try {
+            String query = "UPDATE MONITEUR SET nomM = ?, prenomM = ? WHERE idM = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setString(1, m.getNomM());
+            ps.setString(2, m.getPrenomM());
+            ps.setInt(3, m.getIdM());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteReserver(int idC, int idCour, int idPo){
+        try {
+            String query = "DELETE FROM RESERVER WHERE idC = ? AND idCour = ? AND idPo = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setInt(1, idC);
+            ps.setInt(2, idCour);
+            ps.setInt(3, idPo);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCours(int id){
+        try {
+            String query = "DELETE FROM COURS WHERE idCour = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteMoniteur(int id){
+        try {
+            String query = "DELETE FROM MONITEUR WHERE idM = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteClient(int id){
+        try {
+            String query = "DELETE FROM CLIENT WHERE idC = ?";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getMaxidPoney(){
+        int max = 0;
+        try {
+            String query = "SELECT MAX(idPo) FROM PONEY";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                max = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return max;
+    }
      
-    
+    public int getMaxidClient(){
+        int max = 0;
+        try {
+            String query = "SELECT MAX(idC) FROM CLIENT";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                max = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return max;
+    }
+
+    public int getMaxidCours(){
+        int max = 0;
+        try {
+            String query = "SELECT MAX(idCour) FROM COURS";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                max = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return max;
+    }
+        
+    public int getMaxidMoniteur(){
+        int max = 0;
+        try {
+            String query = "SELECT MAX(idM) FROM MONITEUR";
+            PreparedStatement ps = co.getConnexion().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                max = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return max;
+    }
 }
 

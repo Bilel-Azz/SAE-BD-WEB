@@ -8,6 +8,9 @@ public class Cours {
     private Date dateCour;
     private Time heure;
     private Time duree;
+    private String dateCour2;
+    private String heure2;
+    private String duree2;
 
 
     public Cours(int idCour, String nomCour, int idM, Date dateCour, Time heure, Time duree) {
@@ -17,6 +20,15 @@ public class Cours {
         this.dateCour = dateCour;
         this.heure = heure;
         this.duree = duree;
+    }
+
+    public Cours(int idCour, String nomCour, int idM, String dateCour2, String heure2, String duree2) {
+        this.idCour = idCour;
+        this.nomCour = nomCour;
+        this.idM = idM;
+        this.dateCour2 = dateCour2;
+        this.heure2 = heure2;
+        this.duree2 = duree2;
     }
     
 
@@ -48,6 +60,11 @@ public class Cours {
         return this.dateCour;
     }
 
+    public String getDateCoursString() {
+        return this.dateCour2;
+    }
+
+
     public void setDateCour(Date dateCour) {
         this.dateCour = dateCour;
     }
@@ -56,12 +73,20 @@ public class Cours {
         return this.heure;
     }
 
+    public String getHeureString() {
+        return this.heure2;
+    }
+
     public void setHeure(Time heure) {
         this.heure = heure;
     }
 
     public Time getDuree() {
         return this.duree;
+    }
+
+    public String getDureeString() {
+        return this.duree2;
     }
 
     public void setDuree(Time duree) {
