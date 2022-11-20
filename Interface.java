@@ -134,7 +134,9 @@ public class Interface {
                         int idCours3 = sc.nextInt();
                         System.out.println("Veuillez entrer l'id du client:");  
                         int idClient3 = sc.nextInt();
-                        poney.deleteReserver(idClient3, idCours3, idPoney2);
+                        System.out.println("Veuillez entrer l'id du poney:");  
+                        int idPoney3 = sc.nextInt();
+                        poney.deleteReserver(idClient3, idCours3,idPoney3);
                         break;
                     case 4:
                         System.out.println("________________________________________________________");

@@ -1,3 +1,56 @@
+DROP TABLES RESERVER;
+DROP TABLES CLIENT;
+DROP TABLES PONEY;
+DROP TABLES COURS;
+DROP TABLES MONITEUR;
+
+
+CREATE TABLE CLIENT(
+    idC INT PRIMARY KEY,
+    nomC VARCHAR(30),
+    prenomC VARCHAR(30),
+    poidsC INT,
+    cotisation BOOLEAN
+);
+
+CREATE TABLE PONEY (
+    idPo INT PRIMARY KEY,
+    poidPo INT,
+    poidSup INT,
+    nomPo VARCHAR(30),
+    agePo INT check (agePo >= 0 and agePo <= 40)
+
+);
+CREATE TABLE MONITEUR (
+    idM INT PRIMARY KEY,
+    nomM VARCHAR(30),
+    prenomM VARCHAR(30)
+);
+
+CREATE TABLE COURS (
+    idCour INT PRIMARY KEY,
+    nomcour VARCHAR(30),
+    idM INT ,
+    nbMax int check (nbMax >= 0 and nbMax <= 10), 
+    dates DATE,
+    heure TIME check (heure >= '08:00:00' and heure <= '18:00:00'),
+    duree TIME check (duree <= '02:00:00')
+);
+
+CREATE TABLE RESERVER (
+    idC INT,
+    idPo INT,
+    idCour INT,
+    PRIMARY KEY (idC, idPo, idCour)
+
+);
+
+
+ALTER TABLE COURS ADD FOREIGN KEY (idM) REFERENCES MONITEUR(idM);
+ALTER TABLE RESERVER ADD FOREIGN KEY (idC) REFERENCES CLIENT(idC);
+ALTER TABLE RESERVER ADD FOREIGN KEY (idPo) REFERENCES PONEY(idPo);
+ALTER TABLE RESERVER ADD FOREIGN KEY (idCour) REFERENCES COURS(idCour);
+
 -- Contrainte mise en place :
     -- 1. un poney ne peut pas participer à un cours s'il à déjà participé à un cours de 2h juste avant le cours en question et qu'il n'a pas encore effectuer son repos de 1h
     -- 2. si un client n'a pas payé sa cotisation, il ne peut pas participer à un cours
@@ -234,4 +287,17 @@ begin
     end if;
 end |
 delimiter ;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
