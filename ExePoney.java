@@ -1,6 +1,12 @@
 import java.util.Scanner;
 
-public class Interface {
+// INSRUCTIONS :
+// à loginMySQL et mdpMySQL mettre vos identifiant de connexion à la base de données ,  à NomBase mettre le nom de la base de données (modifier le 'DB')
+// compiler les fichiers et exécuter le fichier ExePoney.java
+
+
+
+public class ExePoney {
     public static void main(String[] args) {
         System.out.println("________________________________________________________");
         System.out.println("Bienvenue dans le programme de gestion de l'écurie de SAE");
