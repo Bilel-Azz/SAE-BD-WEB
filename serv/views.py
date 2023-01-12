@@ -1,10 +1,11 @@
 from .app import app
 from flask import render_template, request, redirect, url_for
+from .models import Client, Moniteur, Poney, Cours, Reserver
 
 
 @app.route ("/")
 def index():
-    return render_template('index.html')
+    return "<h1> Hello World </h1>"
 
 @app.route ("/about")
 def about():
@@ -17,10 +18,21 @@ def contact():
 @app.route ("/contact")
 def contact_post():
     return redirect(url_for('contact'))
-
 @app.route ("/services")
 def services():
     return render_template('services.html')
 
+@app.route("/connexion")
+def connexion():
+    return render_template('connexion.html')
+
+@app.route("/creationcompte")
+def creationcompte():
+    
+    return render_template('creationcompte.html')
+
+@app.route("/creationreservation")
+def creationreservation():
+    return render_template('creerreservation.html')
 
 
