@@ -1,2 +1,2 @@
 from .app import app
-import serv.views
+from .views import *

@@ -67,11 +67,18 @@
                <div class="logo"><a href="{{ url_for('index') }}"><img src="{{ url_for('static',filename = 'images/logo.png')}}"></a></div>
                <div class="menu_main">
                   <ul>
+
                      <li class="active"><a href="{{ url_for('index') }}">Accueil</a></li>
                      <li><a href="{{ url_for('about') }}">A propos</a></li>
                      <li><a href="{{ url_for('services') }}">Nos Services</a></li>
-                     <li><a href="blog.html">Blog</a></li>
+                     {% if current_user.is_authenticated %}
+                     <li><a href="{{ url_for('moncompte') }}">Mon compte</a></li>
+                     <li><a href="{{ url_for('logout') }}">Deconnexion</a></li>
+                     {% else %}
+                     <li><a href="{{ url_for('connexion') }}">Connexion</a></li>
+                     {% endif %}
                      <li><a href="{{ url_for('contact') }}">Nous Contactez</a></li>
+
                   </ul>
                </div>
             </div>
@@ -83,10 +90,6 @@
       <!-- footer section start -->
       <div class="footer_section layout_padding">
          <div class="container">
-            <div class="input_btn_main">
-               <input type="text" class="mail_text" placeholder="Entrer votre email" name="Enter your email">
-               <div class="subscribe_bt"><a href="#">S'abonner</a></div>
-            </div>
             <div class="location_main">
                <div class="call_text"><img src="{{ url_for('static',filename = 'images/call-icon.png')}}"></div>
                <div class="call_text"><a href="#">Tel +33 1234567890</a></div>
