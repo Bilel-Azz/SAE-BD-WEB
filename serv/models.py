@@ -11,13 +11,16 @@ class Utilisateur(Base,UserMixin):
     emailU = Column(String(40))
     passwordU = Column(String(40))
     idC = Column(Integer)
+    adminn = Column(Boolean)
 
     def get_user(email, password):   
         return session.query(Utilisateur).filter(Utilisateur.emailU == email, Utilisateur.passwordU == password).first()
 
     def get_id(self):
         return self.idU
-    
+
+    def is_admin(self):
+        return self.adminn
         
 
 class Client(Base):
