@@ -1,3 +1,4 @@
+
 from .app import login_manager
 from .core.database import Base,session,db
 from sqlalchemy import *
@@ -61,11 +62,13 @@ class Poney(Base):
     nomPo= Column(String(30))
     agePo = Column(Integer)
 
+
     def get_all_ponies():
         return session.query(Poney).all()
     
     def get_poney_by_id(id):
         return session.query(Poney).filter(Poney.idPo == id).first()
+
 
 
 class Cours(Base):
@@ -85,11 +88,13 @@ class Cours(Base):
         return session.query(Cours).filter(Cours.idCour == id).first()
 
 
+
 class Reserver(Base):
     __tablename__ = 'RESERVER'
     idC = Column(Integer, primary_key=True)
     idPo = Column(Integer, primary_key=True)
     idCour = Column(Integer, primary_key=True)
+
 
     def get_all_reserver():
         return session.query(Reserver).all()
@@ -108,3 +113,4 @@ class Reserver(Base):
 @login_manager.user_loader
 def load_user(id):
     return session.query(Utilisateur).get(int(id))
+
