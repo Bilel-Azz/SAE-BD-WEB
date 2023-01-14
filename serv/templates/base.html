@@ -70,7 +70,12 @@
                      <li class="active"><a href="index.html">Accueil</a></li>
                      <li><a href="about.html">A propos</a></li>
                      <li><a href="services.html">Nos Services</a></li>
-                     <li><a href="blog.html">Blog</a></li>
+                     {% if current_user.is_authenticated %}
+                     <li><a href="{{ url_for('moncompte') }}">Mon compte</a></li>
+                     <li><a href="{{ url_for('logout') }}">Deconnexion</a></li>
+                     {% else %}
+                     <li><a href="{{ url_for('connexion') }}">Connexion</a></li>
+                     {% endif %}
                      <li><a href="contact.html">Nous Contactez</a></li>
                   </ul>
                </div>

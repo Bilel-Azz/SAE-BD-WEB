@@ -13,7 +13,7 @@ def ouvrir_connexion(user,passwd,host,database):
     """
     try:
         #creation de l'objet gérant les interactions avec le serveur de BD
-        engine=sqlalchemy.create_engine('mysql+mysqlconnector://'+user+':'+passwd+'@'+host+'/'+database)
+        engine=sqlalchemy.create_engine('mysql://'+user+':'+passwd+'@'+host+'/'+database)
         #creation de la connexion
         cnx = engine.connect()
     except Exception as err:

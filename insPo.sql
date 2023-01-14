@@ -1,3 +1,5 @@
+
+
 INSERT INTO CLIENT (idC,nomC,prenomC,poidsC,cotisation)
 VALUES (100,"Lazure","Arnaud",52,True),
        (101,"Faucher","Nicolas",35,True),
@@ -9,7 +11,8 @@ VALUES (100,"Lazure","Arnaud",52,True),
        (107,"Cena","Jhon",60,True),
        (108,"Roronoa","Zoro",46,True),
        (109,"Uzumaki","Naruto",35,True);
-         
+
+INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC) VALUES (1,"test@test.com","test",105) ;
 
 INSERT INTO PONEY (idPo,poidPo,poidSup,nomPo,agePo)
 VALUES (1,170,50,"Wolf",21),
