@@ -13,6 +13,8 @@ VALUES (100,"Lazure","Arnaud",52,True),
        (109,"Uzumaki","Naruto",35,True);
 
 INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC) VALUES (1,"test@test.com","test",105) ;
+INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC) VALUES (2,"test1@test.com","test1",100) ;
+
 
 INSERT INTO PONEY (idPo,poidPo,poidSup,nomPo,agePo)
 VALUES (1,170,50,"Wolf",21),

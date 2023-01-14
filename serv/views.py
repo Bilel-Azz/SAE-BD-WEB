@@ -93,6 +93,24 @@ def logout():
 
 @app.route("/moncompte")
 def moncompte():
-    client = Client.get_client_by_id(current_user.idC)
-    return render_template('compte.html', client=client)
+    listRes = []
+    reservations = Reserver.get_reserver_by_client(current_user.idC)
+    for reservation in reservations:
+        client = Client.get_client_by_id(reservation.idC)
+        cours = Cours.get_cours_by_id(reservation.idCour)
+        poney = Poney.get_poney_by_id(reservation.idPo)
+        moniteur = Moniteur.get_moniteur_by_id(cours.idM)
+        date = Cours.get_date_cours(reservation.idCour)
+        heure = Cours.get_heure_cours(reservation.idCour)
+        idC = reservation.idC
+        idPo = reservation.idPo
+        idCour = reservation.idCour
+        nbParticipant = Reserver.get_number_of_participants(reservation.idCour)
+        listRes.append((client, cours, poney, moniteur , date, heure, nbParticipant, idC, idPo, idCour))
+    return render_template('compte.html', client=client, listRes=listRes)
+
+@app.route("/annulerreservation/<int:idC>/<int:idPo>/<int:idCour>", methods=['DELETE', 'POST', 'GET'])
+def annulerreservation(idC,idPo,idCour):
+    Reserver.delete_reserver(idC,idPo,idCour)
+    return redirect(url_for('moncompte'))
 

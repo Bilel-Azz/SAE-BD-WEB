@@ -3,4 +3,47 @@
 
 <h1 class="services_taital">Bienvenue {{ client.prenomC}} {{client.nomC}} </h1>
 
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Recent Salse</h6>
+            <a href="">Show All</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">Nom du Cours</th>
+                        <th scope="col">Poney utilisé</th>
+                        <th scope="col">Moniteur superviseur</th>
+                        <th scope="col">Date du Cours</th>
+                        <th scope="col">Heure du Cours</th>
+                        <th scope="col">Nombre de Participant</th>
+                        <th scope="col">Gérer ses cours</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in listRes %}
+                    <tr>  
+                        <td>{{reservation[1].nomcour}}</td>
+                        <td>{{reservation[2].nomPo}}</td>
+                        <td>{{reservation[3].nomM}}</td>
+                        <td>{{reservation[4].dates}}</td>
+                        <td>{{reservation[5].heure}}</td>
+                        <td>{{reservation[6]}}</td>
+                        <form method="POST" action="{{ url_for('annulerreservation', idC=reservation[7], idPo=reservation[8], idCour=reservation[9])}}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <td><button class="btn btn-danger" type="submit" onclick="return confirm('Etes-vous sûr de vouloir annuler cette réservation?');">Annuler reservations</button></td>
+                          </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</form>
+
 {% endblock %}

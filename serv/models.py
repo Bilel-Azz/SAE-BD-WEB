@@ -87,6 +87,12 @@ class Cours(Base):
     def get_cours_by_id(id):
         return session.query(Cours).filter(Cours.idCour == id).first()
 
+    def get_date_cours(id):
+        return session.query(Cours.dates).filter(Cours.idCour == id).first()
+    
+    def get_heure_cours(id):
+        return session.query(Cours.heure).filter(Cours.idCour == id).first()
+
 
 
 class Reserver(Base):
@@ -107,6 +113,17 @@ class Reserver(Base):
 
     def get_reserver_by_cours(id):
         return session.query(Reserver).filter(Reserver.idCour == id).all()
+
+    def get_nom_cours(id):
+        return session.query(Cours.nomcour).filter(Reserver.idCour == id).first()
+
+    def get_number_of_participants(idCour):
+        return session.query(Reserver).filter(Reserver.idCour == idCour).count()
+
+    def delete_reserver(idC,idPo,idCour):
+        session.query(Reserver).filter(Reserver.idC == idC, Reserver.idPo == idPo, Reserver.idCour == idCour).delete()
+        session.commit()
+
     
 
 
