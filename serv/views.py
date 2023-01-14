@@ -1,10 +1,16 @@
 from .app import app
+from .models import *
+from .models import Base,session
 from flask import render_template, request, redirect, url_for
 
 
-@app.route ("/")
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
+
+@app.route ("/accueilClient")
+def accueilClient():
+    return render_template('accueilClient.html')
 
 @app.route ("/about")
 def about():
@@ -14,13 +20,12 @@ def about():
 def contact():
     return render_template('contact.html')
 
-@app.route ("/contact")
-def contact_post():
-    return redirect(url_for('contact'))
-
 @app.route ("/services")
 def services():
     return render_template('services.html')
 
 
 
+
+
+ 
