@@ -21,6 +21,8 @@ class Utilisateur(Base,UserMixin):
 
     def is_admin(self):
         return self.adminn
+
+        
         
 
 class Client(Base):
@@ -36,6 +38,13 @@ class Client(Base):
 
     def get_client_by_id(id):
         return session.query(Client).filter(Client.idC == id).first()
+
+    def supprimer_client(id):
+        session.query(Client).filter(Client.idC == id).delete()
+        session.commit()
+
+    def get_nom_client(id):
+        return session.query(Client.nomC).filter(Client.idC == id).first()
 
 
 class Moniteur(Base):

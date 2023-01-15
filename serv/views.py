@@ -7,6 +7,8 @@ from wtforms import StringField, HiddenField , PasswordField
 from wtforms.validators import DataRequired
 from .core.database import Base, session
 from flask_login import login_user, current_user , logout_user , login_required
+from flask import flash
+from sqlalchemy.exc import IntegrityError
 
 
 from .models import Client, Moniteur, Poney, Cours, Reserver,Utilisateur
@@ -44,6 +46,11 @@ def creationcompte():
 @app.route("/creationreservation")
 def creationreservation():
     return render_template('creerreservation.html')
+
+@app.route("/gererClient")
+def gererClient():
+    client = Client.get_all_clients()
+    return render_template('gererClient.html', client=client)
 
 
 class ConnexionForm(FlaskForm):
@@ -117,3 +124,33 @@ def annulerreservation(idC,idPo,idCour):
     Reserver.delete_reserver(idC,idPo,idCour)
     return redirect(url_for('moncompte'))
 
+
+@app.route("/supprimerclient/<int:idC>", methods=['DELETE', 'POST', 'GET'])
+def supprimerclient(idC):
+    try:
+        Client.supprimer_client(idC)
+    except IntegrityError as e:
+        flash(f"Impossible de supprimer le client {Client.get_nom_client(idC)} il est lié à une réservation, veuillez supprimer la réservation avant de supprimer le client", "danger")
+    return redirect(url_for('gererClient'))
+
+@app.route("/ajouterclient", methods=['GET', 'POST'])
+def ajouterclient():
+    if request.method == 'POST':
+        idC = request.form['idC']
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        poids = request.form['poids']
+        cotisation = request.form.get('cotisation')
+        if cotisation == 'on':
+            cotisation = True
+        else:
+            cotisation = False
+        try :
+            client = Client(idC=idC,nomC=nom, prenomC=prenom, poidsC=poids, cotisation = cotisation)
+            session.add(client)
+            session.commit()
+            flash(f"Le client {client.nomC} {client.prenomC} a bien été ajouté", "success")
+        except IntegrityError as e:
+            session.rollback()
+            flash(f"Une erreur c'est produite,le client {nom} {prenom} existe déjà avec cet ID , veuillez en mettre un autre", "danger")
+        return redirect(url_for('gererClient'))
