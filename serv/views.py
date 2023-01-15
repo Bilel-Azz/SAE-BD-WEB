@@ -52,6 +52,26 @@ def gererClient():
     client = Client.get_all_clients()
     return render_template('gererClient.html', client=client)
 
+@app.route("/gererMoniteur")
+def gererMoniteur():
+    moniteur = Moniteur.get_all_moniteurs()
+    return render_template('gererMoniteur.html',moniteur=moniteur)
+
+@app.route("/gererCours")
+def gererCours():
+    cours = Cours.get_all_cours()
+    return render_template('gererCours.html',cours=cours)
+
+@app.route("/gererPoney")
+def gererPoney():
+    poney = Poney.get_all_ponies()
+    return render_template('gererPoney.html',poney=poney)
+
+@app.route("/gererReservation")
+def gererReservation():
+    reservation = Reserver.get_all_reserver()
+    return render_template('gererReservation.html',reservation=reservation)
+
 
 class ConnexionForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
@@ -129,14 +149,51 @@ def annulerreservation(idC,idPo,idCour):
 def supprimerclient(idC):
     try:
         Client.supprimer_client(idC)
+        flash(f"Le client {Client.get_nom_client(idC)} a bien été supprimé", "success")
     except IntegrityError as e:
-        flash(f"Impossible de supprimer le client {Client.get_nom_client(idC)} il est lié à une réservation, veuillez supprimer la réservation avant de supprimer le client", "danger")
+        flash(f"Une erreur c'est produite, impossible de supprimer le client {Client.get_nom_client(idC)} est lié à une réservation, veuillez supprimer la réservation avant de supprimer le client", "danger")
     return redirect(url_for('gererClient'))
+
+@app.route("/supprimerMoniteur/<int:idM>", methods=['DELETE', 'POST', 'GET'])
+def supprimermoniteur(idM):
+    try:
+        flash(f"Le moniteur {Moniteur.get_nom_moniteur(idM)} a bien été supprimé", "success")
+        Moniteur.supprimer_moniteur(idM)      
+    except IntegrityError as e:
+        flash(f"Une erreur c'est produite, impossible de supprimer le moniteur{Moniteur.get_nom_moniteur(idM)} est lié à un cour, veuillez attendre que le moniteur n'est plus de cours avant de le supprimer", "danger")
+    return redirect(url_for('gererMoniteur'))
+
+@app.route("/supprimercours/<int:idCour>", methods=['DELETE', 'POST', 'GET'])
+def supprimercours(idCour):
+    try:
+        flash(f"Le cours {Cours.get_nom_cour(idCour)} a bien été supprimé", "success")
+        Cours.supprimer_cour(idCour)
+    except IntegrityError as e:
+        flash(f"Une erreur c'est produite, impossible de supprimer le cour {Cours.get_nom_cour(idCour)}", "danger")
+    return redirect(url_for('gererCours'))
+
+@app.route("/supprimerponey/<int:idPo>", methods=['DELETE', 'POST', 'GET'])
+def supprimerponey(idPo):
+    try:
+        flash(f"Le poney {Poney.get_nom_poney(idPo)} a bien été supprimé", "success")
+        Poney.supprimer_poney(idPo)
+    except IntegrityError as e:
+        flash(f"Une erreur c'est produite, impossible de supprimer le poney {Poney.get_nom_poney(idPo)}", "danger")
+    return redirect(url_for('gererPoney'))
+
+@app.route("/supprimerreservation/<int:idC>/<int:idPo>/<int:idCour>", methods=['DELETE', 'POST', 'GET'])
+def supprimerreservation(idC,idPo,idCour):
+    try:
+        flash(f"La reservation {idC}, {idPo}, {idCour} a bien été supprimé", "success")
+        Reserver.delete_reserver(idC,idPo,idCour)
+    except IntegrityError as e:
+        flash(f"Une erreur c'est produite, impossible de supprimer la reservation {idC},{idPo},{idCour}", "danger")
+    return redirect(url_for('gererReservation'))
+
 
 @app.route("/ajouterclient", methods=['GET', 'POST'])
 def ajouterclient():
     if request.method == 'POST':
-        idC = request.form['idC']
         nom = request.form['nom']
         prenom = request.form['prenom']
         poids = request.form['poids']
@@ -146,7 +203,7 @@ def ajouterclient():
         else:
             cotisation = False
         try :
-            client = Client(idC=idC,nomC=nom, prenomC=prenom, poidsC=poids, cotisation = cotisation)
+            client = Client(nomC=nom, prenomC=prenom, poidsC=poids, cotisation = cotisation)
             session.add(client)
             session.commit()
             flash(f"Le client {client.nomC} {client.prenomC} a bien été ajouté", "success")
@@ -154,3 +211,57 @@ def ajouterclient():
             session.rollback()
             flash(f"Une erreur c'est produite,le client {nom} {prenom} existe déjà avec cet ID , veuillez en mettre un autre", "danger")
         return redirect(url_for('gererClient'))
+
+@app.route("/ajouterMoniteur", methods=['GET', 'POST'])
+def ajouterMoniteur():
+    if request.method == 'POST':
+        idM = request.form['idM']
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        try :
+            moniteur = Moniteur(idM=idM,nomM=nom, prenomM=prenom)
+            session.add(moniteur)
+            session.commit()
+            flash(f"Le moniteur a bien été ajouté", "success")
+        except IntegrityError as e:
+            session.rollback()
+            flash(f"Une erreur c'est produite,un moniteur existe déjà avec cet ID , veuillez en mettre un autre", "danger")
+        return redirect(url_for('gererMoniteur'))
+
+@app.route("/ajoutercours", methods=['GET', 'POST'])
+def ajoutercours():
+    if request.method == 'POST':
+        IdCours = request.form['IdCour']
+        nomcour = request.form['nomcour']
+        idM = request.form['idM']
+        nbMax = request.form['nbMax']
+        date = request.form['date']
+        heure = request.form['heure']
+        duree = request.form['duree']
+        try:
+            cours = Cours(idCour=IdCours, nomcour=nomcour,nbMax=nbMax,idM=idM, dates=date, heure=heure, duree=duree)
+            session.add(cours)
+            session.commit()
+            flash(f"Le cours a bien été ajouté", "success")
+        except IntegrityError as e:
+            session.rollback()
+            flash(f"Une erreur c'est produite,un cours existe déjà avec cet ID , veuillez en mettre un autre", "danger")
+        return redirect(url_for('gererCours'))
+
+@app.route("/ajouterponey", methods=['GET', 'POST'])
+def ajouterponey():
+    if request.method == 'POST':
+        idPo = request.form['idPo']
+        poidPo = request.form['poidPo']
+        poidSup = request.form['poidSup']
+        nomPo = request.form['nomPo']
+        agePo = request.form['agePo']
+        try:
+            poney = Poney(idPo=idPo, poidPo=poidPo, poidSup=poidSup, nomPo=nomPo, agePo=agePo)
+            session.add(poney)
+            session.commit()
+            flash(f"Le poney a bien été ajouté", "success")
+        except IntegrityError as e:
+            session.rollback()
+            flash(f"Une erreur c'est produite,un poney existe déjà avec cet ID , veuillez en mettre un autre", "danger")
+        return redirect(url_for('gererPoney'))

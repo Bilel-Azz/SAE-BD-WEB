@@ -10,12 +10,12 @@ VALUES (100,"Lazure","Arnaud",52,True),
        (106,"Tesla","Nicolas",35,True),
        (107,"Cena","Jhon",60,True),
        (108,"Roronoa","Zoro",46,True),
-       (9999,"admin","admin",9999,True),
+       (1,"admin","admin",0,True),
        (109,"Uzumaki","Naruto",35,True);
 
-INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (1,"test@test.com","test",105,False);
-INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (2,"test1@test.com","test1",100,False);
-INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (3,"admin@test.com","admin",9999,true) ;
+INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (1,"admin@test.com","admin",1,true) ;
+INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (2,"test@test.com","test",105,False);
+INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (3,"test1@test.com","test1",100,False);
 
 
 INSERT INTO PONEY (idPo,poidPo,poidSup,nomPo,agePo)

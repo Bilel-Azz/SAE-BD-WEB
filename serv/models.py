@@ -34,7 +34,7 @@ class Client(Base):
     cotisation = Column(Boolean)
 
     def get_all_clients():
-        return session.query(Client).all()
+        return session.query(Client).filter(Client.idC != 1).all()
 
     def get_client_by_id(id):
         return session.query(Client).filter(Client.idC == id).first()
@@ -57,14 +57,20 @@ class Moniteur(Base):
         return session.query(Moniteur).all()
 
     def get_moniteur_by_id(id):
-        return session.query(Moniteur).filter(Moniteur.idM == id).first()
+        moniteur = session.query(Moniteur.nomM).filter(Moniteur.idM == id).first()
+        if moniteur:
+            return moniteur.nomM
+        else:
+            return None
 
-# CREATE TABLE PONEY (
-#     idPo INT PRIMARY KEY,
-#     poidPo INT,
-#     poidSup INT,
-#     nomPo VARCHAR(30),
-#     agePo INT check (agePo >= 0 and agePo <= 40)
+    def get_nom_moniteur(id):
+        return session.query(Moniteur.nomM).filter(Moniteur.idM == id).first()
+
+    def supprimer_moniteur(id):
+        session.query(Moniteur).filter(Moniteur.idM == id).delete()
+        session.commit()
+
+
 
 class Poney(Base):
     __tablename__ = 'PONEY'
@@ -81,14 +87,21 @@ class Poney(Base):
     def get_poney_by_id(id):
         return session.query(Poney).filter(Poney.idPo == id).first()
 
+    def get_nom_poney(id):
+        return session.query(Poney.nomPo).filter(Poney.idPo == id).first()
+
+    def supprimer_poney(id):
+        session.query(Poney).filter(Poney.idPo == id).delete()
+        session.commit()
+
 
 
 class Cours(Base):
     __tablename__ = 'COURS'
     idCour = Column(Integer, primary_key=True)
     nomcour = Column(String(30))
-    idM = Column(Integer)
     nbMax = Column(Integer)
+    idM = Column(Integer)
     dates = Column(Date)
     heure = Column(Time)
     duree = Column(Time)
@@ -104,6 +117,13 @@ class Cours(Base):
     
     def get_heure_cours(id):
         return session.query(Cours.heure).filter(Cours.idCour == id).first()
+
+    def get_nom_cour(id):
+        return session.query(Cours.nomcour).filter(Cours.idCour == id).first()
+
+    def supprimer_cour(id):
+        session.query(Cours).filter(Cours.idCour == id).delete()
+        session.commit()
 
 
 

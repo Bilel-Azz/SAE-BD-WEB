@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="titre-ad">Tous les cours de Poney 45</p>
+<form class = "form-client"action="{{ url_for('ajoutercours') }}" method="POST">
+    <label for="IdCour">Id cours :</label>
+    <input type="number" id="IdCour" name="IdCour" required>
+  
+    <label for="nomcour">Nom du cours :</label>
+    <input type="text" id="nomcour" name="nomcour" required>
+
+    <label for="idM">id d'un moniteur :</label>
+    <input type="number" id="idM" name="idM" required>
+  
+    <label for="nbMax">Max places :</label>
+    <input type="number" id="nbMax" name="nbMax" required>
+  
+    <label for="date">Date du cours :</label>
+    <input type="date" id="date" name="date" >
+
+    <label for="heure">Heure du cours :</label>
+    <input type="time" id="heure" name="heure" >
+
+    <label for="duree">Dureé du cours :</label>
+    <input type="time" id="duree" name="duree" >
+  
+    <input type="submit" value="Ajouter cours">
+  </form>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      {% if message.startswith('Une') %}
+        <div class="alert alert-danger" role="alert">
+      {% else %}
+        <div class="alert alert-success" role="alert">
+      {% endif %}
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="table-responsive">
+            <table class="table table-dark">
+             <thead>
+                    <tr class="text-white">
+                        <th scope="col">id Cour</th>
+                        <th scope="col">Nom du cour</th>
+                        <th scope="col">id Moniteur superviseur </th>
+                        <th scope="col">Max personnes</th>
+                        <th scope="col">date du cour</th>
+                        <th scope="col">heure du cour</th>
+                        <th scope="col">duree du cour</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if cours %}
+                    {% for cour in cours %}
+                    <tr>  
+                        <td>{{cour.idCour}}</td>
+                        <td>{{cour.nomcour}}</td>
+                        <td>{{cour.idM}}</td>
+                        <td>{{cour.nbMax}}</td>
+                        <td>{{cour.dates}}</td>
+                        <td>{{cour.heure}}</td>
+                        <td>{{cour.duree}}</td>
+                        <form method="POST" action="{{ url_for('supprimercours', idCour=cour.idCour)}}">
+                            <input type="hidden" name="_method" value="DELETE" >
+                            <td><button class="btn btn-danger" type="submit" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce cours ?');">supprimer cours</button></td>
+                        </form>
+                    </tr>            
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

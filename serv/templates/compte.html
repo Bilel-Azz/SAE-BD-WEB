@@ -2,14 +2,14 @@
 {% block content %}
 
 {% if admin %}
-    <h2 class="titre-ad">Bienvenue admin , choisissez ce que vous voulez modifier</h2>
+    <p class="titre-ad">Bienvenue admin , choisissez ce que vous voulez modifier</p>
     <div class="div-bouton">
         <div class="div-bouton-enfant">
             <a href="{{ url_for('gererClient') }}" class ="button-adm"><img src="{{ url_for('static',filename = 'images/customer.png')}}">Voir tout les clients</a>
-            <a href="{{ url_for('gererClient') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/instructor.png')}}">Voir tout les moniteurs</a>
-            <a href = "{{ url_for('gererClient') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/course.png')}}">Voir tout les cours</a>
-            <a href = "{{ url_for('gererClient') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/horse.png')}}">Voir tout les poneys</a>
-            <a href = "{{ url_for('gererClient') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/reservations.png')}}">Voir tout les reservations</a>
+            <a href="{{ url_for('gererMoniteur') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/instructor.png')}}">Voir tout les moniteurs</a>
+            <a href = "{{ url_for('gererCours') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/course.png')}}">Voir tout les cours</a>
+            <a href = "{{ url_for('gererPoney') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/horse.png')}}">Voir tout les poneys</a>
+            <a href = "{{ url_for('gererReservation') }}" class="button-adm"><img src="{{ url_for('static',filename = 'images/reservations.png')}}">Voir tout les reservations</a>
         </div>
         
     </div>

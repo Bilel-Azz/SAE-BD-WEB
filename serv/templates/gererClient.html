@@ -1,10 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Tous les clients de Poney 45</h1>
+<p class="titre-ad">Tous les clients de Poney 45</p>
 <form class = "form-client"action="{{ url_for('ajouterclient') }}" method="POST">
-    <label for="idC">ID :</label>
-    <input type="number" id="idC" name="idC" required>
-  
     <label for="nom">Nom :</label>
     <input type="text" id="nom" name="nom" required>
   
