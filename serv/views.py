@@ -42,7 +42,6 @@ def connexion():
 
 @app.route("/creationcompte")
 def creationcompte():
-    
     return render_template('creationcompte.html')
 
 @app.route("/creationreservation")
@@ -116,14 +115,23 @@ def createcompte():
     password = form.password.data
     poids = form.poids.data
     poids = int(poids)
-    client = Client(nomC=nom, prenomC=prenom, poidsC=poids, cotisation = True)
-    session.add(client)
-    session.commit()
-    user = Utilisateur(emailU=email, passwordU=password, idC=client.idC)
-    session.add(user)
-    session.commit()
+    try:
+        client = Client(nomC=nom, prenomC=prenom, poidsC=poids, cotisation = True)
+        session.add(client)
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+        return render_template('erreur.html')
+    try:
+        user = Utilisateur(emailU=email, passwordU=password, idC=client.idC)
+        session.add(user)
+        session.commit()
+    except IntegrityError as e:
+        print(e.args)
+        session.rollback()
+        return render_template('erreur.html')
     client = Client.get_client_by_id(user.idC)
-    return "<h1>{} {}</h1>".format(client.nomC, client.prenomC)
+    return redirect(url_for('connexion'))
     
 @app.route("/logout")
 def logout():
