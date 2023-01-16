@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="titre-ad">Tous les poneys de Poney 45</p>
+<form class = "form-client"action="{{ url_for('ajouterponey') }}" method="POST">
+    <label for="idPo">Id poney :</label>
+    <input type="number" id="idPo" name="idPo" required>
+  
+    <label for="poidPo">Poid du poney :</label>
+    <input type="number" id="poidPo" name="poidPo" required>
+
+    <label for="poidSup">poid supportable :</label>
+    <input type="number" id="poidSup" name="poidSup" required>
+  
+    <label for="nomPo">Nom poney :</label>
+    <input type="text" id="nomPo" name="nomPo" required>
+  
+    <label for="agePo">Age poney :</label>
+    <input type="text" id="agePo" name="agePo" >
+  
+    <input type="submit" value="Ajouter poney">
+  </form>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      {% if message.startswith('Une') %}
+        <div class="alert alert-danger" role="alert">
+      {% else %}
+        <div class="alert alert-success" role="alert">
+      {% endif %}
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="table-responsive">
+            <table class="table table-dark">
+             <thead>
+                    <tr class="text-white">
+                        <th scope="col">Id poney</th>
+                        <th scope="col">Poid du poney</th>
+                        <th scope="col">Poid supportable</th>
+                        <th scope="col">Nom poney</th>
+                        <th scope="col">Age poney</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if poney %}
+                    {% for po in poney %}
+                    <tr>  
+                        <td>{{po.idPo}}</td>
+                        <td>{{po.poidPo}}</td>
+                        <td>{{po.poidSup}}</td>
+                        <td>{{po.nomPo}}</td>
+                        <td>{{po.agePo}}</td>
+                        <form method="POST" action="{{ url_for('supprimerponey', idPo=po.idPo)}}">
+                            <input type="hidden" name="_method" value="DELETE" >
+                            <td><button class="btn btn-danger" type="submit" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce poney ?');">supprimer poney</button></td>
+                        </form>
+                    </tr>            
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

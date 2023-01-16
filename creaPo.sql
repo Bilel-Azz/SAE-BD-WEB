@@ -20,7 +20,8 @@ CREATE TABLE UTILISATEUR (
     idU INT PRIMARY KEY AUTO_INCREMENT,
     emailU VARCHAR(30),
     passwordU VARCHAR(30),
-    idC INT
+    idC INT,
+    adminn BOOLEAN
 );
 
 CREATE TABLE PONEY (

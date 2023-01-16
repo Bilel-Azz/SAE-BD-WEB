@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="titre-ad">Toutes les reservations de Poney 45</p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      {% if message.startswith('Une') %}
+        <div class="alert alert-danger" role="alert">
+      {% else %}
+        <div class="alert alert-success" role="alert">
+      {% endif %}
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="table-responsive">
+            <table class="table table-dark">
+             <thead>
+                    <tr class="text-white">
+                        <th scope="col">Id Client</th>
+                        <th scope="col">Id Poney</th>
+                        <th scope="col">Id Cour</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if reservation %}
+                    {% for res in reservation %}
+                    <tr>  
+                        <td>{{res.idC}}</td>
+                        <td>{{res.idPo}}</td>
+                        <td>{{res.idCour}}</td>
+                        <form method="POST" action="{{ url_for('supprimerreservation', idC=res.idC,idPo=res.idPo,idCour=res.idCour)}}">
+                            <input type="hidden" name="_method" value="DELETE" >
+                            <td><button class="btn btn-danger" type="submit" onclick="return confirm('Etes-vous sûr de vouloir supprimer cette reservation ?');">supprimer la reservation</button></td>
+                        </form>
+                    </tr>            
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
