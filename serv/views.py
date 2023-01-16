@@ -7,6 +7,7 @@ from wtforms import StringField, HiddenField , PasswordField
 from wtforms.validators import DataRequired
 from .core.database import Base, session
 from flask_login import login_user, current_user , logout_user , login_required
+from sqlalchemy.exc import IntegrityError
 
 
 from .models import Client, Moniteur, Poney, Cours, Reserver,Utilisateur
@@ -43,7 +44,15 @@ def creationcompte():
 
 @app.route("/creationreservation")
 def creationreservation():
-    return render_template('creerreservation.html')
+    cours = Cours.get_all_cours()
+    return render_template('creerreservation.html', cours=cours)
+
+@app.route("/creationreservationponey/<idCour>")
+def creationreservationponey(idCour):
+    client=Client.get_client_by_id(current_user.idC)
+    poneys= Poney.get_poney_suportable(client.poidsC)
+    return render_template('creerreservationponey.html', poneys=poneys, idCour=idCour)
+
 
 
 class ConnexionForm(FlaskForm):
@@ -59,6 +68,8 @@ def login():
     if user is not None:
         login_user(user)
         return redirect(url_for('index'))
+    return redirect(url_for('connexion'))
+
 
 
 class CreationCompteForm(FlaskForm):
@@ -96,3 +107,12 @@ def moncompte():
     client = Client.get_client_by_id(current_user.idC)
     return render_template('compte.html', client=client)
 
+@app.route("/comfirmation/<idCour>/<idPo>")
+def comfirmation(idCour, idPo):
+    try:
+        session.add(Reserver(idC=current_user.idC, idCour=idCour, idPo=idPo))
+        session.commit()
+        return render_template('confirmation.html')
+    except IntegrityError:
+        session.rollback()
+        return render_template('erreur.html')

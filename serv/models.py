@@ -69,6 +69,9 @@ class Poney(Base):
     def get_poney_by_id(id):
         return session.query(Poney).filter(Poney.idPo == id).first()
 
+    def get_poney_suportable(poids):
+        return session.query(Poney).filter(Poney.poidSup >= poids).all()
+
 
 
 class Cours(Base):
