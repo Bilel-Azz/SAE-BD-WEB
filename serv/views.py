@@ -7,7 +7,9 @@ from wtforms import StringField, HiddenField , PasswordField
 from wtforms.validators import DataRequired
 from .core.database import Base, session
 from flask_login import login_user, current_user , logout_user , login_required
+
 from flask import flash
+
 from sqlalchemy.exc import IntegrityError
 
 
@@ -45,7 +47,15 @@ def creationcompte():
 
 @app.route("/creationreservation")
 def creationreservation():
-    return render_template('creerreservation.html')
+    cours = Cours.get_all_cours()
+    return render_template('creerreservation.html', cours=cours)
+
+@app.route("/creationreservationponey/<idCour>")
+def creationreservationponey(idCour):
+    client=Client.get_client_by_id(current_user.idC)
+    poneys= Poney.get_poney_suportable(client.poidsC)
+    return render_template('creerreservationponey.html', poneys=poneys, idCour=idCour)
+
 
 @app.route("/gererClient")
 def gererClient():
@@ -86,6 +96,8 @@ def login():
     if user is not None:
         login_user(user)
         return redirect(url_for('index'))
+    return redirect(url_for('connexion'))
+
 
 
 class CreationCompteForm(FlaskForm):
@@ -248,6 +260,17 @@ def ajoutercours():
             flash(f"Une erreur c'est produite,un cours existe déjà avec cet ID , veuillez en mettre un autre", "danger")
         return redirect(url_for('gererCours'))
 
+
+@app.route("/comfirmation/<idCour>/<idPo>")
+def comfirmation(idCour, idPo):
+    try:
+        session.add(Reserver(idC=current_user.idC, idCour=idCour, idPo=idPo))
+        session.commit()
+        return render_template('confirmation.html')
+    except IntegrityError:
+        session.rollback()
+        return render_template('erreur.html')
+
 @app.route("/ajouterponey", methods=['GET', 'POST'])
 def ajouterponey():
     if request.method == 'POST':
@@ -265,3 +288,4 @@ def ajouterponey():
             session.rollback()
             flash(f"Une erreur c'est produite,un poney existe déjà avec cet ID , veuillez en mettre un autre", "danger")
         return redirect(url_for('gererPoney'))
+

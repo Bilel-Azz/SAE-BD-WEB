@@ -11,21 +11,21 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Date</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">Moniteurs</th>
-                    <th scope="col">Nombres de personnes</th>
+                    <th scope="col">Poids</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">PoidsSup</th>
                 </tr>
             </thead>
             <tbody>
-                {% for cour in cours %}
+                {% for poney in poneys %}
                     <tr>
-                        <th scope="row">{{ cour.idCour }}</th>
-                        <td>{{ cour.dates }} à {{cour.heure}}</td>
-                        <td>{{ cour.nomcour }}</td>
-                        <td>Walid</td>
-                        <td>{{ cour.nbMax }}</td>
-                        <td><a class="btn btn-primary" href="{{ url_for('creationreservationponey', idCour=cour.idCour) }}">Reserver</a></td>
+                        <th scope="row">{{ poney.idPo }}</th>
+                        <td>{{ poney.nomPo }}</td>
+                        <td>{{ poney.poidPo }}</td>
+                        <td>{{ poney.agePo }}</td>
+                        <td>{{ poney.poidSup }}</td>
+                        <td><a class="btn btn-primary" href="{{ url_for('comfirmation', idCour=idCour, idPo=poney.idPo) }}">Reserver</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
