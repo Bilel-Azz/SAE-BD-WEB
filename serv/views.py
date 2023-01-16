@@ -44,6 +44,10 @@ def connexion():
 def creationcompte():
     return render_template('creationcompte.html')
 
+@app.route("/poneys")
+def poneys():
+    return render_template('poneys.html')
+
 @app.route("/creationreservation")
 def creationreservation():
     cours = Cours.get_all_cours()
