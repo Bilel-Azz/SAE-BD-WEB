@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="titre-ad">Tous les moniteurs de Poney 45</p>
+<form class = "form-client"action="{{ url_for('ajouterMoniteur') }}" method="POST">
+    <label for="idM">Id Moniteur :</label>
+    <input type="number" id="idM" name="idM" required>
+  
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required>
+  
+    <label for="prenom">Prenom :</label>
+    <input type="text" id="prenom" name="prenom" required>
+  
+    <input type="submit" value="Ajouter moniteur">
+  </form>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      {% if message.startswith('Une') %}
+        <div class="alert alert-danger" role="alert">
+      {% else %}
+        <div class="alert alert-success" role="alert">
+      {% endif %}
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="table-responsive">
+            <table class="table table-dark">
+             <thead>
+                    <tr class="text-white">
+                        <th scope="col">Id Moniteur</th>
+                        <th scope="col">Nom </th>
+                        <th scope="col">Prenom </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if moniteur %}
+                    {% for mon in moniteur %}
+                    <tr>  
+                        <td>{{mon.idM}}</td>
+                        <td>{{mon.nomM}}</td>
+                        <td>{{mon.prenomM}}</td>
+                        <form method="POST" action="{{ url_for('supprimermoniteur', idM=mon.idM)}}">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <td><button class="btn btn-danger" type="submit" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce moniteur ?');">supprimer moniteur</button></td>
+                        </form>  
+                    </tr> 
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
