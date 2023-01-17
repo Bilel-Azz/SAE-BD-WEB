@@ -7,12 +7,8 @@ from wtforms import StringField, HiddenField , PasswordField
 from wtforms.validators import DataRequired
 from .core.database import Base, session
 from flask_login import login_user, current_user , logout_user , login_required
-
 from flask import flash
-
 from sqlalchemy.exc import IntegrityError
-
-
 from .models import Client, Moniteur, Poney, Cours, Reserver,Utilisateur
 
 
@@ -142,7 +138,6 @@ def createcompte():
         session.add(user)
         session.commit()
     except IntegrityError as e:
-        print(e.args)
         session.rollback()
         return render_template('erreur.html')
     client = Client.get_client_by_id(user.idC)
