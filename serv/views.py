@@ -242,8 +242,9 @@ def ajouterMoniteur():
         idM = request.form['idM']
         nom = request.form['nom']
         prenom = request.form['prenom']
+        descriptionMo = request.form['descriptionMo']
         try :
-            moniteur = Moniteur(idM=idM,nomM=nom, prenomM=prenom)
+            moniteur = Moniteur(idM=idM,nomM=nom, prenomM=prenom, descriptionM=descriptionMo)
             session.add(moniteur)
             session.commit()
             flash(f"Le moniteur a bien été ajouté", "success")
@@ -291,8 +292,9 @@ def ajouterponey():
         poidSup = request.form['poidSup']
         nomPo = request.form['nomPo']
         agePo = request.form['agePo']
+        descriptionPo = request.form['descriptionPo']
         try:
-            poney = Poney(idPo=idPo, poidPo=poidPo, poidSup=poidSup, nomPo=nomPo, agePo=agePo)
+            poney = Poney(idPo=idPo, poidPo=poidPo, poidSup=poidSup, nomPo=nomPo, agePo=agePo, descriptionPo=descriptionPo)
             session.add(poney)
             session.commit()
             flash(f"Le poney a bien été ajouté", "success")
