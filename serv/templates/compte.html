@@ -15,9 +15,24 @@
     </div>
 
 {% else %}
-        <p class="titre-ad">Bienvenue client , choisissez ce que vous voulez modifier</p>
-        <a href="{{ url_for('creationreservation') }}" class ="button-adm"><img src="{{ url_for('static',filename = 'images/customer.png')}}">Faire une réservation</a>
 
+        <p class="titre-ad" style="color:black">Bienvenue sur votre compte </p>
+        <a href="{{ url_for('creationreservation') }}" class ="button-adm" ><img src="{{ url_for('static',filename = 'images/customer.png')}}">Faire une réservation</a>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for message in messages %}
+      {% if message.startswith('Une') %}
+        <div class="alert alert-danger" role="alert">
+      {% else %}
+        <div class="alert alert-success" role="alert">
+      {% endif %}
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
         <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">
             <div class="table-responsive">
@@ -39,7 +54,7 @@
                         <tr>  
                             <td>{{reservation[1].nomcour}}</td>
                             <td>{{reservation[2].nomPo}}</td>
-                            <td>{{reservation[3].nomM}}</td>
+                            <td>{{reservation[3]}}</td>
                             <td>{{reservation[4].dates}}</td>
                             <td>{{reservation[5].heure}}</td>
                             <td>{{reservation[6]}}</td>

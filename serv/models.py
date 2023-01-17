@@ -56,13 +56,14 @@ class Moniteur(Base):
 
     def get_all_moniteurs():
         return session.query(Moniteur).all()
+    
+    def get_all_moniteurs_limit():
+        return session.query(Moniteur).limit(4).all()
 
     def get_moniteur_by_id(id):
         moniteur = session.query(Moniteur.nomM).filter(Moniteur.idM == id).first()
         if moniteur:
             return moniteur.nomM
-        else:
-            return None
 
     def get_nom_moniteur(id):
         return session.query(Moniteur.nomM).filter(Moniteur.idM == id).first()

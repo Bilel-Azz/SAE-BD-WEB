@@ -54,6 +54,9 @@
                            <a class="nav-link " href="{{ url_for('poneys') }}">Nos Poneys</a>
                         </li>
                         <li class="nav-item">
+                           <a class="nav-link " href="{{ url_for('moniteurs') }}">Nos Moniteurs</a>
+                        </li>
+                        <li class="nav-item">
                            <a class="nav-link " href="{{ url_for('contact') }}">Nous Contactez</a>
                         </li>
                         <li class="nav-item">
@@ -72,6 +75,7 @@
                      
                      <li><a href="{{ url_for('services') }}">Nos Services</a></li>
                      <li><a href="{{ url_for('poneys') }}">Nos Poneys</a></li>
+                     <li><a href="{{ url_for('moniteurs') }}">Nos Moniteurs</a></li>
                      {% if current_user.is_authenticated %}
                      <li><a href="{{ url_for('moncompte') }}">Mon compte</a></li>
                      <li><a href="{{ url_for('logout') }}">Deconnexion</a></li>
