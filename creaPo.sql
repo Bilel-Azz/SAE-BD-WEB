@@ -29,13 +29,15 @@ CREATE TABLE PONEY (
     poidPo INT,
     poidSup INT,
     nomPo VARCHAR(30),
-    agePo INT check (agePo >= 0 and agePo <= 40)
+    agePo INT check (agePo >= 0 and agePo <= 40),
+    descriptionPo VARCHAR(500)
 
 );
 CREATE TABLE MONITEUR (
     idM INT PRIMARY KEY AUTO_INCREMENT,
     nomM VARCHAR(30),
-    prenomM VARCHAR(30)
+    prenomM VARCHAR(30),
+    descriptionMo VARCHAR(500)
 );
 
 CREATE TABLE COURS (

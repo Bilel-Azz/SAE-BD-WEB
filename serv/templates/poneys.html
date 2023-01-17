@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<p style = "font-size: 2.5em;color:black;">Les poneys de notre club !</p>
+    
+<div class="poney-container" style = "text-align:center">
+        {% for i in range(poney|length) %}
+            <div class="poney-card">
+                <img src="../static/images/cheval{{ i + 1 }}.png" alt="{{ poney[i].nomPo }}" style="max-width: 400px; max-height: 400px; min-width: 200px; min-height: 200px;">
+                <h2> {{ poney[i].nomPo}}</h2>
+                <p style = "font-size: 1.5em;color:black"> {{ poney[i].descriptionPo }} </p>
+            </div>
+        {% endfor %}
+</div>
+{% endblock%}
+

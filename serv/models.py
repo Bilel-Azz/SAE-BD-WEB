@@ -56,16 +56,18 @@ class Moniteur(Base):
     idM = Column(Integer, primary_key=True)
     nomM = Column(String(40))
     prenomM = Column(String(40))
+    descriptionMo = Column(String(100))
 
     def get_all_moniteurs():
         return session.query(Moniteur).all()
+    
+    def get_all_moniteurs_limit():
+        return session.query(Moniteur).limit(4).all()
 
     def get_moniteur_by_id(id):
         moniteur = session.query(Moniteur.nomM).filter(Moniteur.idM == id).first()
         if moniteur:
             return moniteur.nomM
-        else:
-            return None
 
     def get_nom_moniteur(id):
         return session.query(Moniteur.nomM).filter(Moniteur.idM == id).first()
@@ -83,10 +85,14 @@ class Poney(Base):
     poidSup = Column(Integer)
     nomPo= Column(String(30))
     agePo = Column(Integer)
+    descriptionPo = Column(String(100))
 
 
     def get_all_ponies():
         return session.query(Poney).all()
+
+    def get_all_ponies_limite():
+        return session.query(Poney).limit(4).all()
     
     def get_poney_by_id(id):
         return session.query(Poney).filter(Poney.idPo == id).first()

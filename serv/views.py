@@ -44,6 +44,16 @@ def connexion():
 def creationcompte():
     return render_template('creationcompte.html')
 
+@app.route("/poneys")
+def poneys():
+    poney = Poney.get_all_ponies_limite()
+    return render_template('poneys.html', poney=poney)
+
+@app.route("/moniteurs")
+def moniteurs():
+    moniteur = Moniteur.get_all_moniteurs_limit()
+    return render_template('moniteurs.html', moniteur=moniteur)
+
 @app.route("/creationreservation")
 def creationreservation():
     cours = Cours.get_cours_disponibles_by_client(current_user.idC)
@@ -150,7 +160,6 @@ def moncompte():
     user = Utilisateur.get_user(current_user.emailU, current_user.passwordU)
     admin = user.is_admin()
     client = Client.get_client_by_id(current_user.idC)
-    print(admin)
     for reservation in reservations:
         cours = Cours.get_cours_by_id(reservation.idCour)
         poney = Poney.get_poney_by_id(reservation.idPo)
@@ -166,15 +175,20 @@ def moncompte():
 
 @app.route("/annulerreservation/<int:idC>/<int:idPo>/<int:idCour>", methods=['DELETE', 'POST', 'GET'])
 def annulerreservation(idC,idPo,idCour):
-    Reserver.delete_reserver(idC,idPo,idCour)
+    try:
+        Reserver.delete_reserver(idC,idPo,idCour)
+        flash(f"La reservation {idC,idPo,idCour} a bien été supprimé", "success")
+    except IntegrityError as e:
+        flash(f"Une erreur c'est produite, impossible de supprimer la reservation {idC,idPo,idCour} veuillez réessayez", "danger")
     return redirect(url_for('moncompte'))
 
 
 @app.route("/supprimerclient/<int:idC>", methods=['DELETE', 'POST', 'GET'])
 def supprimerclient(idC):
     try:
+        client =Client.get_nom_client(idC)
         Client.supprimer_client(idC)
-        flash(f"Le client {Client.get_nom_client(idC)} a bien été supprimé", "success")
+        flash(f"Le client {client} a bien été supprimé", "success")
     except IntegrityError as e:
         flash(f"Une erreur c'est produite, impossible de supprimer le client {Client.get_nom_client(idC)} est lié à une réservation, veuillez supprimer la réservation avant de supprimer le client", "danger")
     return redirect(url_for('gererClient'))
@@ -182,8 +196,9 @@ def supprimerclient(idC):
 @app.route("/supprimerMoniteur/<int:idM>", methods=['DELETE', 'POST', 'GET'])
 def supprimermoniteur(idM):
     try:
-        flash(f"Le moniteur {Moniteur.get_nom_moniteur(idM)} a bien été supprimé", "success")
-        Moniteur.supprimer_moniteur(idM)      
+        moniteur = Moniteur.get_nom_moniteur(idM)
+        Moniteur.supprimer_moniteur(idM)
+        flash(f"Le moniteur {moniteur} a bien été supprimé", "success")     
     except IntegrityError as e:
         flash(f"Une erreur c'est produite, impossible de supprimer le moniteur{Moniteur.get_nom_moniteur(idM)} est lié à un cour, veuillez attendre que le moniteur n'est plus de cours avant de le supprimer", "danger")
     return redirect(url_for('gererMoniteur'))
@@ -191,26 +206,32 @@ def supprimermoniteur(idM):
 @app.route("/supprimercours/<int:idCour>", methods=['DELETE', 'POST', 'GET'])
 def supprimercours(idCour):
     try:
-        flash(f"Le cours {Cours.get_nom_cour(idCour)} a bien été supprimé", "success")
+        cours = Cours.get_nom_cour(idCour)
         Cours.supprimer_cour(idCour)
+        flash(f"Le cours {cours} a bien été supprimé", "success")
+        
     except IntegrityError as e:
-        flash(f"Une erreur c'est produite, impossible de supprimer le cour {Cours.get_nom_cour(idCour)}", "danger")
+        flash(f"Une erreur c'est produite, impossible de supprimer le cour {Cours.get_nom_cour(idCour)}, celui-ci est lié à des réséervations", "danger")
     return redirect(url_for('gererCours'))
 
 @app.route("/supprimerponey/<int:idPo>", methods=['DELETE', 'POST', 'GET'])
 def supprimerponey(idPo):
     try:
-        flash(f"Le poney {Poney.get_nom_poney(idPo)} a bien été supprimé", "success")
+        poney = Poney.get_nom_poney(idPo)
         Poney.supprimer_poney(idPo)
+        flash(f"Le poney {poney} a bien été supprimé", "success")
+        
     except IntegrityError as e:
-        flash(f"Une erreur c'est produite, impossible de supprimer le poney {Poney.get_nom_poney(idPo)}", "danger")
+        flash(f"Une erreur c'est produite, impossible de supprimer le poney {Poney.get_nom_poney(idPo)}, il est lié à une résérvation", "danger")
     return redirect(url_for('gererPoney'))
 
 @app.route("/supprimerreservation/<int:idC>/<int:idPo>/<int:idCour>", methods=['DELETE', 'POST', 'GET'])
 def supprimerreservation(idC,idPo,idCour):
     try:
-        flash(f"La reservation {idC}, {idPo}, {idCour} a bien été supprimé", "success")
+        reservation = (idC,idPo,idCour)
         Reserver.delete_reserver(idC,idPo,idCour)
+        flash(f"La reservation {reservation} a bien été supprimé", "success")
+        
     except IntegrityError as e:
         flash(f"Une erreur c'est produite, impossible de supprimer la reservation {idC},{idPo},{idCour}", "danger")
     return redirect(url_for('gererReservation'))
@@ -243,11 +264,12 @@ def ajouterMoniteur():
         idM = request.form['idM']
         nom = request.form['nom']
         prenom = request.form['prenom']
+        descriptionMo = request.form['description']
         try :
-            moniteur = Moniteur(idM=idM,nomM=nom, prenomM=prenom)
+            moniteur = Moniteur(idM=idM,nomM=nom, prenomM=prenom, descriptionMo=descriptionMo)
             session.add(moniteur)
             session.commit()
-            flash(f"Le moniteur a bien été ajouté", "success")
+            flash(f"Le moniteur {nom} {prenom} a bien été ajouté", "success")
         except IntegrityError as e:
             session.rollback()
             flash(f"Une erreur c'est produite,un moniteur existe déjà avec cet ID , veuillez en mettre un autre", "danger")
@@ -267,7 +289,7 @@ def ajoutercours():
             cours = Cours(idCour=IdCours, nomcour=nomcour,nbMax=nbMax,idM=idM, dates=date, heure=heure, duree=duree)
             session.add(cours)
             session.commit()
-            flash(f"Le cours a bien été ajouté", "success")
+            flash(f"Le cours {nomcour} a bien été ajouté", "success")
         except IntegrityError as e:
             session.rollback()
             flash(f"Une erreur c'est produite,un cours existe déjà avec cet ID , veuillez en mettre un autre", "danger")
@@ -292,11 +314,12 @@ def ajouterponey():
         poidSup = request.form['poidSup']
         nomPo = request.form['nomPo']
         agePo = request.form['agePo']
+        descriptionPo = request.form['description']
         try:
-            poney = Poney(idPo=idPo, poidPo=poidPo, poidSup=poidSup, nomPo=nomPo, agePo=agePo)
+            poney = Poney(idPo=idPo, poidPo=poidPo, poidSup=poidSup, nomPo=nomPo, agePo=agePo, descriptionPo=descriptionPo)
             session.add(poney)
             session.commit()
-            flash(f"Le poney a bien été ajouté", "success")
+            flash(f"Le poney {nomPo} a bien été ajouté", "success")
         except IntegrityError as e:
             session.rollback()
             flash(f"Une erreur c'est produite,un poney existe déjà avec cet ID , veuillez en mettre un autre", "danger")

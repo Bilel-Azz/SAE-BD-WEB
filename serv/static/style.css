@@ -321,3 +321,7 @@
    .button-adm:active {
     transform: scale(0.9);
    }
+
+   .poney-container{
+        display: flex;
+   }
