@@ -56,13 +56,16 @@ def moniteurs():
 
 @app.route("/creationreservation")
 def creationreservation():
-    cours = Cours.get_all_cours()
+    cours = Cours.get_cours_disponibles_by_client(current_user.idC)
     return render_template('creerreservation.html', cours=cours)
 
 @app.route("/creationreservationponey/<idCour>")
 def creationreservationponey(idCour):
     client=Client.get_client_by_id(current_user.idC)
     poneys= Poney.get_poney_suportable(client.poidsC)
+    if len (poneys)==0:
+        flash("Désolé, Vous ne pouvez pas reserver de poney, votre poids est trop lourd")
+        return redirect(url_for('creationreservation'))
     return render_template('creerreservationponey.html', poneys=poneys, idCour=idCour)
 
 
@@ -105,7 +108,9 @@ def login():
     if user is not None:
         login_user(user)
         return redirect(url_for('index'))
-    return redirect(url_for('connexion'))
+    else:
+        flash('Invalid username/password combination')
+        return redirect(url_for('connexion'))
 
 
 
