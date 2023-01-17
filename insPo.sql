@@ -18,37 +18,26 @@ INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (2,"test@test.c
 INSERT INTO UTILISATEUR (idU,emailU,passwordU,idC,adminn) VALUES (3,"test1@test.com","test1",100,False);
 
 
-INSERT INTO PONEY (idPo,poidPo,poidSup,nomPo,agePo)
-VALUES (1,170,50,"Wolf",21),
-       (2,210,65,"Buddy",28),
-       (3,190,81,"Peak",32),
-       (4,180,88,"Poney1",28),
-       (5,200,76,"Poney2",29),
-       (6,220,50,"Poney3",26),
-       (7,230,50,"Poney4",32),
-       (8,240,90,"Poney5",38),
-       (9,250,80,"Poney6",15),
-       (10,260,87,"Poney7",25),
-       (11,270,90,"Poney8",28),
-       (12,120,67,"Poney9",12),
-       (13,290,50,"Poney10",39),
-       (14,300,50,"Poney11",25),
-       (15,310,50,"Poney12",24),
-       (16,320,50,"Poney13",23),
-       (17,196,50,"Poney14",22),
-       (18,340,50,"Poney15",18),
-       (19,100,50,"Poney16",5),
-       (20,360,50,"Poney17",29),
-       (21,385,50,"Poney18",29),
-       (22,360,50,"Poney19",27),
-       (23,320,50,"Poney20",30),
-       (24,149,50,"Poney21",17),
-       (25,186,50,"Poney22",18),
-       (26,185,50,"Poney23",20),
-       (27,216,50,"Poney24",21),
-       (28,230,50,"Poney25",22),
-       (29,124,50,"Poney26",13),
-       (30,165,50,"Poney27",27);
+INSERT INTO PONEY (idPo,poidPo,poidSup,nomPo,agePo,descriptionPo)
+VALUES (1,170,50,"Wolf",21,"Ce magnifique cheval de race Arabe est un athlète accompli dans le domaine du saut d'obstacles. Il possède une agilité remarquable et une intelligence exceptionnelle qui lui permettent de réaliser des parcours complexes avec une précision incroyable. Il a remporté de nombreux prix dans des compétitions de haut niveau et serait un atout formidable pour tout cavalier expérimenté cherchant à se lancer dans la compétition.")
+       (2,210,65,"Buddy",28,"Ce doux et fiable cheval de race Quarter Horse est le compagnon idéal pour les longues randonnées à travers les collines et les forêts. Il possède une endurance exceptionnelle et une personnalité calme et affectueuse qui le rendent parfait pour les cavaliers de tous niveaux. Il aime les balades tranquilles et les sorties en groupe, il est donc également idéal pour les sorties en famille."),
+       (3,190,81,"Peak",32,"Ce mignon poney Welsh est un véritable athlète dans le domaine de la compétition de dressage. Il possède une incroyable souplesse et une grande capacité d'apprentissage qui lui permettent de réaliser des mouvements complexes avec une grande précision. Il est idéal pour les cavaliers expérimentés cherchant à se lancer dans la compétition de dressage de haut niveau."),
+       (4,180,88,"Poney1",28,"Ce charmant poney Shetland est le compagnon idéal pour les balades tranquilles et les petites sorties en forêt. Il est très calme et affectueux, il aime les caresses et les câlins. Il est idéal pour les enfants et les cavaliers débutants. Il est également parfait pour les activités équestres de loisirs comme les petites courses et les sorties en famille."),
+       (5,200,76,"Poney2",29,"Ce cheval est génial"),
+       (6,220,50,"Poney3",26,"Ce cheval est génial"),
+       (7,230,50,"Poney4",32,"Ce cheval est génial"),
+       (8,240,90,"Poney5",38,"Ce cheval est génial"),
+       (9,250,80,"Poney6",15,"Ce cheval est génial"),
+       (10,260,87,"Poney7",25,"Ce cheval est génial"),
+       (11,270,90,"Poney8",28,"Ce cheval est génial"),
+       (12,120,67,"Poney9",12,"Ce cheval est génial"),
+       (13,290,50,"Poney10",39,"Ce cheval est génial"),
+       (14,300,50,"Poney11",25,"Ce cheval est génial"),
+       (15,310,50,"Poney12",24,"Ce cheval est génial"),
+       (16,320,50,"Poney13",23,"Ce cheval est génial"),
+       (17,196,50,"Poney14",22,"Ce cheval est génial"),
+       (18,340,50,"Poney15",18,"Ce cheval est génial"),
+      
 
 INSERT INTO MONITEUR (idM,nomM,prenomM)
 VALUES (200,"Clavet","Fabrice"),

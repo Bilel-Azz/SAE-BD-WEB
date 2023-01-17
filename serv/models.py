@@ -52,6 +52,7 @@ class Moniteur(Base):
     idM = Column(Integer, primary_key=True)
     nomM = Column(String(40))
     prenomM = Column(String(40))
+    descriptionMo = Column(String(100))
 
     def get_all_moniteurs():
         return session.query(Moniteur).all()
@@ -79,6 +80,7 @@ class Poney(Base):
     poidSup = Column(Integer)
     nomPo= Column(String(30))
     agePo = Column(Integer)
+    descriptionPo = Column(String(100))
 
 
     def get_all_ponies():
