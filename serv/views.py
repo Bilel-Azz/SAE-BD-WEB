@@ -46,7 +46,8 @@ def creationcompte():
 
 @app.route("/poneys")
 def poneys():
-    return render_template('poneys.html')
+    poney = Poney.get_all_ponies_limite()
+    return render_template('poneys.html', poney=poney)
 
 @app.route("/creationreservation")
 def creationreservation():
@@ -77,7 +78,7 @@ def gererCours():
 
 @app.route("/gererPoney")
 def gererPoney():
-    poney = Poney.get_all_ponies()
+    poney = Poney.get_all_ponies_limite()
     return render_template('gererPoney.html',poney=poney)
 
 @app.route("/gererReservation")
@@ -149,7 +150,6 @@ def moncompte():
     user = Utilisateur.get_user(current_user.emailU, current_user.passwordU)
     admin = user.is_admin()
     client = Client.get_client_by_id(current_user.idC)
-    print(admin)
     for reservation in reservations:
         cours = Cours.get_cours_by_id(reservation.idCour)
         poney = Poney.get_poney_by_id(reservation.idPo)

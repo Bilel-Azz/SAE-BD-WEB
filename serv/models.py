@@ -83,6 +83,9 @@ class Poney(Base):
 
     def get_all_ponies():
         return session.query(Poney).all()
+
+    def get_all_ponies_limite():
+        return session.query(Poney).limit(4).all()
     
     def get_poney_by_id(id):
         return session.query(Poney).filter(Poney.idPo == id).first()

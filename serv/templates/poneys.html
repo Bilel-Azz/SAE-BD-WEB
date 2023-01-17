@@ -1,16 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="poney-container">
-    <div class="poney-card">
-        <img src="cheval1.jpg" alt="Cheval1">
-        <h2> Prénom : Poney1 </h2>
-        <p> Description : C'est un poney très gentil et affectueux, il aime les caresses et les sorties en forêt. Il est idéal pour les enfants et les débutants. </p>
-    </div>
-    <div class="poney-card">
-        <img src="cheval2.jpg" alt="Cheval2">
-        <h2> Prénom : Poney2 </h2>
-        <p> Description : C'est un poney très énergique et joueur, il aime les longues balades et les sauts d'obstacles. Il convient aux cavaliers expérimentés. </p>
-    </div>
+<h1>Les poneys de notre club !</h1>
+    
+    <div class="poney-container">
+        {% for po in poney %}
+        <div class="poney-card"  style="position:left">
+            <img src="../static/images/cheval1.png" alt="Cheval1" style="max-width: 400px; max-height: 400px; min-width: 200px; min-height: 200px;">
+            <h2> {{ po.nomPo}}</h2>
+            <p style = "font-size: 1.5em;"> Description : C'est un poney très gentil et affectueux, il aime les caresses et les sorties en forêt. Il est idéal pour les enfants et les débutants. </p>
+        </div>
+        <div class="poney-card" style="position:right">
+            <img src="../static/images/cheval2.png" alt="Cheval2" style="max-width: 400px; max-height: 400px; min-width: 200px; min-height: 200px;">
+            <h2> Prénom : {{ po.nomPo }} </h2>
+            <p> Description : C'est un poney très énergique et joueur, il aime les longues balades et les sauts d'obstacles. Il convient aux cavaliers expérimentés. </p>
+        </div>
+        <div class="poney-card">
+            <img src="../static/images/cheval3.png" alt="Cheval3" style="max-width: 400px; max-height: 400px; min-width: 200px; min-height: 200px;">
+            <h2> {{ po.nomPo}} </h2>
+            <p> Description : C'est un poney très calme et sage, il aime les balades tranquilles et les petites courses. Il est idéal pour les cavaliers débutants. </p>
+        </div>
+        <div class="poney-card"  style="position:left">
+            <img src="../static/images/cheval4.png" alt="Cheval4" style="max-width: 400px; max-height: 400px; min-width: 200px; min-height: 200px;">
+            <h2> {{ po.nomPo}} </h2>
+            <p> Description : C'est un poney très calme et sage, il aime les balades tranquilles et les petites courses. Il est idéal pour les cavaliers débutants. </p>
+            {% endfor %}
+        </div>
+    
 </div>
-
 {% endblock%}
