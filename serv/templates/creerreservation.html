@@ -8,6 +8,15 @@
         <h3>Choissisez un cours disponible</h3>
 
         <table class="table table-dark">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
             <thead>
                 <tr>
                     <th scope="col">#</th>

@@ -8,13 +8,17 @@ from flask_login import UserMixin
 class Utilisateur(Base,UserMixin):
     __tablename__ = 'UTILISATEUR'
     idU = Column(Integer, primary_key=True)
-    emailU = Column(String(40))
+    emailU = Column(String(100))
     passwordU = Column(String(40))
     idC = Column(Integer)
     adminn = Column(Boolean)
 
     def get_user(email, password):   
-        return session.query(Utilisateur).filter(Utilisateur.emailU == email, Utilisateur.passwordU == password).first()
+        user = session.query(Utilisateur).filter(Utilisateur.emailU == email, Utilisateur.passwordU == password).first()
+        if user:
+            return user
+        else:
+            return None
 
     def get_id(self):
         return self.idU
@@ -124,6 +128,9 @@ class Cours(Base):
 
     def get_nom_cour(id):
         return session.query(Cours.nomcour).filter(Cours.idCour == id).first()
+    
+    def get_cours_disponibles_by_client(id):
+        return session.query(Cours).filter(Cours.idCour.notin_(session.query(Reserver.idCour).filter(Reserver.idC == id))).all()
 
     def supprimer_cour(id):
         session.query(Cours).filter(Cours.idCour == id).delete()

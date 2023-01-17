@@ -23,7 +23,7 @@ def ouvrir_connexion(user,passwd,host,database):
     return cnx
 
 
-cnx=ouvrir_connexion("arslanhan","arslanhan","servinfo-mariadb","DBarslanhan")
+cnx=ouvrir_connexion("root","root","localhost","db_name")
 
 db = cnx
 session = sessionmaker()(bind=db)
